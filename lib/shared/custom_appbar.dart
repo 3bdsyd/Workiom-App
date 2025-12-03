@@ -7,9 +7,10 @@ import 'package:workiom_test_app/core/gen/colors.gen.dart';
 import '../../core/app_theme.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppbar({super.key, this.title});
+  const CustomAppbar({super.key, this.title, this.onTap});
 
   final String? title;
+  final Function? onTap;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -22,7 +23,9 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       titleSpacing: 0,
       leadingWidth: 30.w,
-      leading: _BackButton(onTap: () => context.pop()),
+      leading: _BackButton(
+        onTap: onTap != null ? () => onTap : () => context.pop(),
+      ),
       title: title == null
           ? null
           : Text(

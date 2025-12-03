@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:workiom_test_app/core/gen/assets.gen.dart';
+import 'package:workiom_test_app/core/gen/colors.gen.dart';
 import 'package:workiom_test_app/features/signup/cubit/sign_up_sate.dart';
 import 'package:workiom_test_app/shared/custom_under_line_field.dart';
 
@@ -19,13 +20,11 @@ class CompanyFieldsWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // ---------- Workspace ----------
-        Text('Your  company or team name',
-            style: AppTextStyles.sectionTitle),
+        Text('Your  company or team name', style: AppTextStyles.sectionTitle),
         SizedBox(height: 12.h),
 
         BlocBuilder<SignUpCubit, SignUpState>(
-          buildWhen: (prev, curr) =>
-              prev.tenantName != curr.tenantName,
+          buildWhen: (prev, curr) => prev.tenantName != curr.tenantName,
           builder: (context, state) {
             final hasError =
                 state.tenantName.isNotEmpty && !state.isTenantNameValid;
@@ -41,7 +40,7 @@ class CompanyFieldsWidget extends StatelessWidget {
                   suffix: Text(
                     '.workiom.com',
                     style: AppTextStyles.hint.copyWith(
-                      color: AppColors.textSecondary,
+                      color: ColorName.emperor,
                     ),
                   ),
                   onChanged: cubit.updateTenantName,
@@ -52,9 +51,7 @@ class CompanyFieldsWidget extends StatelessWidget {
                     child: Text(
                       'Workspace name must start with a letter and can '
                       'contain numbers and dashes only.',
-                      style: AppTextStyles.hint.copyWith(
-                        color: Colors.red,
-                      ),
+                      style: AppTextStyles.hint.copyWith(color: Colors.red),
                     ),
                   ),
               ],
@@ -69,8 +66,7 @@ class CompanyFieldsWidget extends StatelessWidget {
         SizedBox(height: 12.h),
 
         BlocBuilder<SignUpCubit, SignUpState>(
-          buildWhen: (prev, curr) =>
-              prev.firstName != curr.firstName,
+          buildWhen: (prev, curr) => prev.firstName != curr.firstName,
           builder: (context, state) {
             final hasError =
                 state.firstName.isNotEmpty && !state.isFirstNameValid;
@@ -90,9 +86,7 @@ class CompanyFieldsWidget extends StatelessWidget {
                     padding: EdgeInsets.only(top: 4.h),
                     child: Text(
                       'First name must contain letters only.',
-                      style: AppTextStyles.hint.copyWith(
-                        color: Colors.red,
-                      ),
+                      style: AppTextStyles.hint.copyWith(color: Colors.red),
                     ),
                   ),
               ],
@@ -107,8 +101,7 @@ class CompanyFieldsWidget extends StatelessWidget {
         SizedBox(height: 12.h),
 
         BlocBuilder<SignUpCubit, SignUpState>(
-          buildWhen: (prev, curr) =>
-              prev.lastName != curr.lastName,
+          buildWhen: (prev, curr) => prev.lastName != curr.lastName,
           builder: (context, state) {
             final hasError =
                 state.lastName.isNotEmpty && !state.isLastNameValid;
@@ -128,9 +121,7 @@ class CompanyFieldsWidget extends StatelessWidget {
                     padding: EdgeInsets.only(top: 4.h),
                     child: Text(
                       'Last name must contain letters only.',
-                      style: AppTextStyles.hint.copyWith(
-                        color: Colors.red,
-                      ),
+                      style: AppTextStyles.hint.copyWith(color: Colors.red),
                     ),
                   ),
               ],

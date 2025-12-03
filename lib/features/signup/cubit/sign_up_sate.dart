@@ -29,7 +29,7 @@ class SignUpState {
   final bool success;
   final bool obscurePassword;
 
-  // ---------- Password helpers ----------
+  // Password requirement getters
 
   int get requiredLength => complexity?.requiredLength ?? 7;
 
@@ -47,7 +47,7 @@ class SignUpState {
   bool get hasSpecial =>
       !requireSpecialFlag || password.contains(RegExp(r'[^a-zA-Z0-9]'));
 
-  // ---------- Company step validation ----------
+  // Company step validation
 
   static final RegExp _tenantRegExp = RegExp(r'^[A-Za-z][A-Za-z0-9-]*$');
   static final RegExp _nameRegExp = RegExp(r'^[A-Za-z]+$');
@@ -64,7 +64,7 @@ class SignUpState {
   bool get isCompanyFormValid =>
       isTenantNameValid && isFirstNameValid && isLastNameValid;
 
-  // ---------- Password strength calculation ----------
+  // Password strength estimation
 
   int get strengthLevels {
     final c = complexity;
@@ -73,19 +73,11 @@ class SignUpState {
       return 2;
     }
 
-    int count = 1; // length
-    if (c.requireUppercase) {
-      count++;
-    }
-    if (c.requireLowercase) {
-      count++;
-    }
-    if (c.requireDigit) {
-      count++;
-    }
-    if (c.requireNonAlphanumeric) {
-      count++;
-    }
+    int count = 1; // length rule
+    if (c.requireUppercase) count++;
+    if (c.requireLowercase) count++;
+    if (c.requireDigit) count++;
+    if (c.requireNonAlphanumeric) count++;
 
     return count;
   }
@@ -93,23 +85,17 @@ class SignUpState {
   int get _passedRules {
     int count = 0;
 
-    if (hasMinLength) {
-      count++;
-    }
+    if (hasMinLength) count++;
 
     final c = complexity;
     if (c == null) {
-      if (password.contains(RegExp(r'[A-Z]'))) {
-        count++;
-      }
+      if (password.contains(RegExp(r'[A-Z]'))) count++;
       return count;
     }
 
     if (c.requireUppercase && password.contains(RegExp(r'[A-Z]'))) count++;
     if (c.requireLowercase && password.contains(RegExp(r'[a-z]'))) count++;
-    if (c.requireDigit && password.contains(RegExp(r'\d'))) {
-      count++;
-    }
+    if (c.requireDigit && password.contains(RegExp(r'\d'))) count++;
     if (c.requireNonAlphanumeric &&
         password.contains(RegExp(r'[^a-zA-Z0-9]'))) {
       count++;
@@ -123,8 +109,6 @@ class SignUpState {
     if (total <= 0) return 0;
     return _passedRules / total;
   }
-
-  // ---------- copyWith ----------
 
   SignUpState copyWith({
     String? email,

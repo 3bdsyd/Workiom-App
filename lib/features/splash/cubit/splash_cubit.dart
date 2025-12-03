@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:workiom_test_app/core/helper/debug_logger_helper.dart';
 import 'package:workiom_test_app/features/auth/data/auth_repository_impl.dart';
 import 'package:workiom_test_app/features/splash/cubit/splash_state.dart';
@@ -32,9 +33,7 @@ class SplashCubit extends Cubit<SplashState> {
         if (isClosed) return;
         emit(state.copyWith(status: SplashStatus.navigateToTenantSignIn));
       } else if (user != null && tenant != null) {
-        DebugLoggerHelper.log(
-          'Splash: user & tenant not null -> go to Home.',
-        );
+        DebugLoggerHelper.log('Splash: user & tenant not null -> go to Home.');
         if (isClosed) return;
         emit(state.copyWith(status: SplashStatus.navigateToHome));
       } else {
@@ -48,13 +47,10 @@ class SplashCubit extends Cubit<SplashState> {
       DebugLoggerHelper.log('Splash: error while checking login info: $e');
       DebugLoggerHelper.log('$st');
 
+      String message = 'Failed to check login information.';
+
       if (isClosed) return;
-      emit(
-        state.copyWith(
-          status: SplashStatus.error,
-          errorMessage: 'Failed to check login information.',
-        ),
-      );
+      emit(state.copyWith(status: SplashStatus.error, errorMessage: message));
     }
   }
 }

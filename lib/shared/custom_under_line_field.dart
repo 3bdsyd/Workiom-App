@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:workiom_test_app/core/app_theme.dart';
 import 'package:workiom_test_app/core/gen/assets.gen.dart';
+import 'package:workiom_test_app/core/gen/colors.gen.dart';
 
 class UnderlineField extends StatefulWidget {
   const UnderlineField({
@@ -67,8 +68,8 @@ class _UnderlineFieldState extends State<UnderlineField>
 
   @override
   Widget build(BuildContext context) {
-    final inactiveColor = AppColors.border;
-    final activeColor = AppColors.primary;
+    final inactiveColor = ColorName.nobel;
+    final activeColor = ColorName.cornflowerBlue;
 
     return Column(
       children: [

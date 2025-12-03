@@ -5,7 +5,12 @@ import 'package:workiom_test_app/core/gen/assets.gen.dart';
 import 'package:workiom_test_app/core/gen/colors.gen.dart';
 
 class CustomGoogleButton extends StatelessWidget {
-  const CustomGoogleButton({super.key});
+  const CustomGoogleButton({
+    super.key,
+    this.onPressed,
+  });
+
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +25,14 @@ class CustomGoogleButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
-        onPressed: () {
-          // TODO: Google sign in
-        },
+        onPressed: onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Assets.icons.google.svg(),
             SizedBox(width: 8.w),
             Text(
-              'Continue with Google ',
+              'Continue with Google',
               style: AppTextStyles.title.copyWith(fontSize: 15.sp),
             ),
           ],

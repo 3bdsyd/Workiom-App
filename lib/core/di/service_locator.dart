@@ -1,7 +1,9 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:workiom_test_app/core/network/network_info.dart';
 
 import '../constants.dart';
 import '../../features/auth/data/auth_api_service.dart';
@@ -47,12 +49,20 @@ Future<void> initDependencies() async {
   getIt.registerSingleton<FlutterSecureStorage>(storage);
   getIt.registerSingleton<Dio>(dio);
 
+  getIt.registerLazySingleton<Connectivity>(() => Connectivity());
+  getIt.registerLazySingleton<NetworkInfo>(
+    () => NetworkInfoImpl(Connectivity()),
+  );
+
   getIt.registerLazySingleton<AuthApiService>(
     () => AuthApiService(getIt<Dio>(), baseUrl: kBaseUrl),
   );
 
   getIt.registerLazySingleton<AuthRepository>(
-    () =>
-        AuthRepository(getIt<AuthApiService>(), getIt<FlutterSecureStorage>()),
+    () => AuthRepository(
+      getIt<AuthApiService>(),
+      getIt<FlutterSecureStorage>(),
+      getIt<NetworkInfo>(),
+    ),
   );
 }

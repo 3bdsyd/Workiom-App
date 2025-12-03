@@ -44,20 +44,18 @@ class SplashScreen extends StatelessWidget {
             break;
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Assets.images.splash.image(height: 80),
-                SizedBox(height: 24),
-                CircularProgressIndicator(
-                  color: ColorName.cornflowerBlue,
-                  backgroundColor: ColorName.nobel,
-                ),
-              ],
-            ),
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Assets.images.splash.image(),
+              SizedBox(height: 24),
+              CircularProgressIndicator(
+                color: ColorName.cornflowerBlue,
+                backgroundColor: ColorName.nobel,
+              ),
+            ],
           ),
         ),
       ),

@@ -42,7 +42,9 @@ class _CustomButtonState extends State<CustomButton> {
         ? widget.backgroundColor ?? ColorName.cornflowerBlue
         : ColorName.nobel;
 
-    final bool isInteractive = widget.onTap != null && !widget.isLoading;
+    final bool isInteractive = widget.onTap != null &&
+        !widget.isLoading &&
+        widget.isEnabled;
 
     return AnimatedScale(
       scale: _isPressed ? 0.95 : 1.0,
@@ -118,7 +120,6 @@ class _CustomButtonState extends State<CustomButton> {
                   : Row(
                       children: [
                         const SizedBox(width: 24),
-
                         Expanded(
                           child: Center(
                             child: Text(
@@ -131,7 +132,6 @@ class _CustomButtonState extends State<CustomButton> {
                             ),
                           ),
                         ),
-
                         Padding(
                           padding: EdgeInsets.only(right: 12.w),
                           child: Assets.icons.arrowBack.svg(),

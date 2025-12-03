@@ -18,7 +18,7 @@ import 'package:workiom_test_app/features/tenant/screens/tenant_sign_in_screen.d
 import 'package:workiom_test_app/features/tenant/screens/tenant_selection_screen.dart';
 
 final appRouter = GoRouter(
-  // أول صفحة بالتطبيق
+  // Initial screen of the app
   initialLocation: SplashScreen.routePath,
   routes: [
     // ------------- Splash -------------
@@ -32,7 +32,8 @@ final appRouter = GoRouter(
         ),
       ),
     ),
-    // ------------- Sign-up steps (password + company) مع SignUpCubit -------------
+
+    // ------------- Sign-up flow (password + company) wrapped with SignUpCubit -------------
     ShellRoute(
       builder: (context, state, child) {
         return BlocProvider<SignUpCubit>(
@@ -71,11 +72,12 @@ final appRouter = GoRouter(
           const MaterialPage(child: ThankYouScreen()),
     ),
 
-    // ------------- باقي الوجهات -------------
+    // ------------- Other App Screens -------------
     GoRoute(
       path: HomeScreen.routePath,
       name: HomeScreen.routeName,
       pageBuilder: (context, state) => const MaterialPage(child: HomeScreen()),
+      
     ),
     GoRoute(
       path: TenantSignInScreen.routePath,

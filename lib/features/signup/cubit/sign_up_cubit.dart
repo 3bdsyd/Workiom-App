@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
 import 'package:workiom_test_app/core/helper/debug_logger_helper.dart';
 import 'package:workiom_test_app/features/signup/cubit/sign_up_sate.dart';
-
 import '../../../features/auth/data/auth_repository_impl.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
@@ -33,7 +34,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     return super.close();
   }
 
-  // ---------- UI updates ----------
+  // UI updates
 
   void updateEmail(String value) {
     emit(state.copyWith(email: value.trim(), errorMessage: null));
@@ -59,7 +60,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(obscurePassword: !state.obscurePassword));
   }
 
-  // ---------- Password validation ----------
+  // Password validation
 
   bool get isPasswordValid {
     final complexity = state.complexity;
@@ -93,46 +94,46 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   bool get isCompanyFormValid => state.isCompanyFormValid;
 
-  // ---------- تحميل إعدادات التسجيل (edition + complexity) ----------
-Future<void> loadSignUpConfig() async {
-  if (state.complexity != null && state.editionId != null) {
-    return;
+  // Load sign-up configuration
+
+  Future<void> loadSignUpConfig() async {
+    if (state.complexity != null && state.editionId != null) {
+      return;
+    }
+
+    try {
+      if (isClosed) return;
+      emit(state.copyWith(isLoadingComplexity: true, errorMessage: null));
+
+      final editionId = await _authRepository.getDefaultEditionId();
+      if (isClosed) return;
+
+      final complexity = await _authRepository.getPasswordComplexity();
+      if (isClosed) return;
+
+      emit(
+        state.copyWith(
+          editionId: editionId,
+          complexity: complexity,
+          isLoadingComplexity: false,
+        ),
+      );
+    } catch (e, st) {
+      DebugLoggerHelper.log('Error while loading sign up config: $e');
+      DebugLoggerHelper.log('$st');
+
+      if (isClosed) return;
+
+      emit(
+        state.copyWith(
+          isLoadingComplexity: false,
+          errorMessage: 'Failed to prepare sign up, please try again.',
+        ),
+      );
+    }
   }
 
-  try {
-    if (isClosed) return;
-    emit(state.copyWith(isLoadingComplexity: true, errorMessage: null));
-
-    final editionId = await _authRepository.getDefaultEditionId();
-    if (isClosed) return;
-
-    final complexity = await _authRepository.getPasswordComplexity();
-    if (isClosed) return;
-
-    emit(
-      state.copyWith(
-        editionId: editionId,
-        complexity: complexity,
-        isLoadingComplexity: false,
-      ),
-    );
-  } catch (e, st) {
-    DebugLoggerHelper.log('Error while loading sign up config: $e');
-    DebugLoggerHelper.log('$st');
-
-    if (isClosed) return;
-
-    emit(
-      state.copyWith(
-        isLoadingComplexity: false,
-        errorMessage: 'Failed to prepare sign up, please try again.',
-      ),
-    );
-  }
-}
-
-
-  // ---------- submit ----------
+  // Submit registration
 
   Future<void> submit() async {
     if (state.email.isEmpty ||
@@ -242,5 +243,78 @@ Future<void> loadSignUpConfig() async {
       if (isClosed) return;
       emit(state.copyWith(isSubmitting: false, errorMessage: message));
     }
+  }
+
+  // Tutorial for CreateAccountScreen
+
+  bool _createAccountTutorialShown = false;
+
+  void showCreateAccountTutorial({
+    required BuildContext context,
+    required GlobalKey googleButtonKey,
+    required GlobalKey emailButtonKey,
+  }) {
+    if (_createAccountTutorialShown) return;
+    _createAccountTutorialShown = true;
+
+    final targets = <TargetFocus>[
+      TargetFocus(
+        identify: 'google_button',
+        keyTarget: googleButtonKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 16,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                'You can quickly create your account using Google.',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: 'email_button',
+        keyTarget: emailButtonKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 16,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                'Or continue with your work email.',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+
+    TutorialCoachMark(
+      targets: targets,
+      paddingFocus: 8,
+      colorShadow: Colors.black,
+      opacityShadow: 0.7,
+      hideSkip: false,
+      textSkip: 'Skip',
+      onFinish: () {},
+      onSkip: () => true,
+      onClickTarget: (target) {},
+      onClickOverlay: (target) {},
+    ).show(context: context);
   }
 }

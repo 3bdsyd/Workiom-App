@@ -14,17 +14,31 @@ import '../../../core/app_theme.dart';
 import '../../../shared/stagger_column.dart';
 
 class CreateAccountBody extends StatelessWidget {
-  const CreateAccountBody({super.key});
+  const CreateAccountBody({
+    super.key,
+    required this.googleButtonKey,
+    required this.emailButtonKey,
+  });
+
+  final GlobalKey googleButtonKey;
+  final GlobalKey emailButtonKey;
 
   @override
   Widget build(BuildContext context) {
     return StaggerColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomAppbar(title: 'Sign in'),
+        CustomAppbar(title: 'Sign in', onTap: () {}),
         CustomTitle(title: 'Create your free account'),
-        Spacer(flex: 2),
-        CustomGoogleButton(),
+        const Spacer(flex: 2),
+
+        // زر Google مع الـ key
+        CustomGoogleButton(
+          key: googleButtonKey,
+          // لسا ما في لوجيك، ممكن تضيف Google sign-in هنا
+          onPressed: () {},
+        ),
+
         SizedBox(height: 24.h),
         Align(
           alignment: Alignment.center,
@@ -34,15 +48,19 @@ class CreateAccountBody extends StatelessWidget {
           ),
         ),
         SizedBox(height: 30.h),
+
+        // زر Continue with email مع الـ key
         CustomButton(
+          key: emailButtonKey,
           text: 'Continue with email',
           onTap: () {
             context.pushNamed(PasswordScreen.routeName);
           },
         ),
+
         SizedBox(height: 30.h),
-        TermAndPolicyWidget(),
-        Spacer(flex: 3),
+        const TermAndPolicyWidget(),
+        const Spacer(flex: 3),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
