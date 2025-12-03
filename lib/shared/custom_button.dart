@@ -42,9 +42,8 @@ class _CustomButtonState extends State<CustomButton> {
         ? widget.backgroundColor ?? ColorName.cornflowerBlue
         : ColorName.nobel;
 
-    final bool isInteractive = widget.onTap != null &&
-        !widget.isLoading &&
-        widget.isEnabled;
+    final bool isInteractive =
+        widget.onTap != null && !widget.isLoading && widget.isEnabled;
 
     return AnimatedScale(
       scale: _isPressed ? 0.95 : 1.0,

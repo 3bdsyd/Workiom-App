@@ -12,8 +12,10 @@ import '../../features/auth/data/auth_repository_impl.dart';
 final getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
+  // secure local storage
   final storage = const FlutterSecureStorage();
 
+  // base Dio setup
   final dio = Dio(
     BaseOptions(
       baseUrl: kBaseUrl,
@@ -22,6 +24,7 @@ Future<void> initDependencies() async {
     ),
   );
 
+  // pretty logger for requests
   dio.interceptors.add(
     PrettyDioLogger(
       requestHeader: true,
@@ -32,32 +35,34 @@ Future<void> initDependencies() async {
     ),
   );
 
+  // auto attach bearer token
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = await storage.read(key: kAuthTokenKey);
-
         if (token != null && token.isNotEmpty) {
           options.headers['Authorization'] = 'Bearer $token';
         }
-
-        return handler.next(options);
+        handler.next(options);
       },
     ),
   );
 
+  // DI registrations
   getIt.registerSingleton<FlutterSecureStorage>(storage);
   getIt.registerSingleton<Dio>(dio);
 
   getIt.registerLazySingleton<Connectivity>(() => Connectivity());
   getIt.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(Connectivity()),
+    () => NetworkInfoImpl(getIt<Connectivity>()),
   );
 
+  // retrofit API service
   getIt.registerLazySingleton<AuthApiService>(
     () => AuthApiService(getIt<Dio>(), baseUrl: kBaseUrl),
   );
 
+  // main repository
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepository(
       getIt<AuthApiService>(),

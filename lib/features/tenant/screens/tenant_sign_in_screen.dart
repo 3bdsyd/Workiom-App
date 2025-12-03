@@ -9,9 +9,7 @@ class TenantSignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('Tenant Sign-In (TODO: implement)'),
-      ),
+      body: Center(child: Text('Tenant Sign-In (TODO: implement)')),
     );
   }
 }

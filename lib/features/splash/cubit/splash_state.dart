@@ -9,18 +9,12 @@ enum SplashStatus {
 }
 
 class SplashState {
-  const SplashState({
-    this.status = SplashStatus.initial,
-    this.errorMessage,
-  });
+  const SplashState({this.status = SplashStatus.initial, this.errorMessage});
 
   final SplashStatus status;
   final String? errorMessage;
 
-  SplashState copyWith({
-    SplashStatus? status,
-    String? errorMessage,
-  }) {
+  SplashState copyWith({SplashStatus? status, String? errorMessage}) {
     return SplashState(
       status: status ?? this.status,
       errorMessage: errorMessage,

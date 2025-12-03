@@ -9,9 +9,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('Home Screen (TODO: implement real home)'),
-      ),
+      body: Center(child: Text('Home Screen (TODO: implement real home)')),
     );
   }
 }

@@ -32,12 +32,7 @@ class CreateAccountBody extends StatelessWidget {
         CustomTitle(title: 'Create your free account'),
         const Spacer(flex: 2),
 
-        // زر Google مع الـ key
-        CustomGoogleButton(
-          key: googleButtonKey,
-          // لسا ما في لوجيك، ممكن تضيف Google sign-in هنا
-          onPressed: () {},
-        ),
+        CustomGoogleButton(key: googleButtonKey, onPressed: () {}),
 
         SizedBox(height: 24.h),
         Align(
@@ -49,7 +44,6 @@ class CreateAccountBody extends StatelessWidget {
         ),
         SizedBox(height: 30.h),
 
-        // زر Continue with email مع الـ key
         CustomButton(
           key: emailButtonKey,
           text: 'Continue with email',

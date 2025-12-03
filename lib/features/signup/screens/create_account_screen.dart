@@ -16,7 +16,6 @@ class CreateAccountScreen extends StatefulWidget {
 }
 
 class _CreateAccountScreenState extends State<CreateAccountScreen> {
-  // المفاتيح المستخدمة للـ tutorial
   final GlobalKey _googleButtonKey = GlobalKey();
   final GlobalKey _emailButtonKey = GlobalKey();
 
@@ -24,7 +23,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   void initState() {
     super.initState();
 
-    // بعد ما تنبني الشاشة، نطلب من الكيوبت يظهر التوتوريال
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final cubit = context.read<SignUpCubit>();
       cubit.showCreateAccountTutorial(

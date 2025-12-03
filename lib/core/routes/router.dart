@@ -77,7 +77,6 @@ final appRouter = GoRouter(
       path: HomeScreen.routePath,
       name: HomeScreen.routeName,
       pageBuilder: (context, state) => const MaterialPage(child: HomeScreen()),
-      
     ),
     GoRoute(
       path: TenantSignInScreen.routePath,

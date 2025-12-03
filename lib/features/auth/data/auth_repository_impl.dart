@@ -63,9 +63,7 @@ class AuthRepository {
 
   // ---- GetCurrentLoginInformations (raw) ----
   Future<Map<String, dynamic>> getCurrentLoginInformationRaw() async {
-    final data = await _requestWithRetry(
-      () => _api.getCurrentLoginInfos(),
-    );
+    final data = await _requestWithRetry(() => _api.getCurrentLoginInfos());
 
     if (data == null) {
       throw Exception('Empty response from GetCurrentLoginInformations');
@@ -82,16 +80,13 @@ class AuthRepository {
 
   // ---- Default edition id ----
   Future<int?> getDefaultEditionId() async {
-    final raw = await _requestWithRetry(
-      () => _api.getEditionsForSelect(),
-    );
+    final raw = await _requestWithRetry(() => _api.getEditionsForSelect());
     final outer = Map<String, dynamic>.from(raw as Map);
 
     final result = (outer['result'] ?? outer) as Map<String, dynamic>;
 
     final editionsWithFeatures =
-        (result['editionsWithFeatures'] as List<dynamic>?) ??
-            const <dynamic>[];
+        (result['editionsWithFeatures'] as List<dynamic>?) ?? const <dynamic>[];
 
     if (editionsWithFeatures.isEmpty) return null;
 
@@ -106,8 +101,9 @@ class AuthRepository {
         .where((e) => (e['isRegistrable'] as bool?) ?? true)
         .toList();
 
-    final selectedEdition =
-        registrable.isNotEmpty ? registrable.first : editions.first;
+    final selectedEdition = registrable.isNotEmpty
+        ? registrable.first
+        : editions.first;
 
     return selectedEdition['id'] as int?;
   }
@@ -200,9 +196,7 @@ class AuthRepository {
     if (authResult.refreshTokenExpireInSeconds != null) {
       await _storage.write(
         key: kRefreshTokenExpiryKey,
-        value: _expiryFromNowSeconds(
-          authResult.refreshTokenExpireInSeconds!,
-        ),
+        value: _expiryFromNowSeconds(authResult.refreshTokenExpireInSeconds!),
       );
     }
 
@@ -212,18 +206,9 @@ class AuthRepository {
     final tenant = loginInfo.tenant;
 
     if (user != null) {
-      await _storage.write(
-        key: kCurrentUserIdKey,
-        value: user.id.toString(),
-      );
-      await _storage.write(
-        key: kCurrentUserNameKey,
-        value: user.userName,
-      );
-      await _storage.write(
-        key: kCurrentUserEmailKey,
-        value: user.emailAddress,
-      );
+      await _storage.write(key: kCurrentUserIdKey, value: user.id.toString());
+      await _storage.write(key: kCurrentUserNameKey, value: user.userName);
+      await _storage.write(key: kCurrentUserEmailKey, value: user.emailAddress);
     }
 
     if (tenant != null) {

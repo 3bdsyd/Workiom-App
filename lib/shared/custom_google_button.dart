@@ -5,10 +5,7 @@ import 'package:workiom_test_app/core/gen/assets.gen.dart';
 import 'package:workiom_test_app/core/gen/colors.gen.dart';
 
 class CustomGoogleButton extends StatelessWidget {
-  const CustomGoogleButton({
-    super.key,
-    this.onPressed,
-  });
+  const CustomGoogleButton({super.key, this.onPressed});
 
   final VoidCallback? onPressed;
 
