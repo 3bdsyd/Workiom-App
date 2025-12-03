@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workiom_test_app/features/signup/cubit/sign_up_sate.dart';
 import 'package:workiom_test_app/features/signup/widgets/company_body_widget.dart';
 
 import '../cubit/sign_up_cubit.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workiom_test_app/features/signup/cubit/sign_up_sate.dart';
 import 'package:workiom_test_app/features/signup/screens/company_screen.dart';
 import 'package:workiom_test_app/shared/custom_button.dart';
 
@@ -13,19 +14,21 @@ class PasswordSubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (prev, curr) =>
-          prev.password != curr.password || prev.complexity != curr.complexity,
+          prev.password != curr.password ||
+          prev.complexity != curr.complexity ||
+          prev.email != curr.email,
       builder: (context, state) {
         final cubit = context.read<SignUpCubit>();
-        final isStrong = cubit.isPasswordValid;
+
+        final bool canContinue =
+            cubit.isPasswordValid && state.email.isNotEmpty;
 
         return CustomButton(
           text: 'Confirm password',
-          isEnabled: !isStrong,
-          onTap: !isStrong
+          isEnabled: canContinue,
+          onTap: canContinue
               ? () {
                   context.pushNamed(CompanyScreen.routeName);
-                  // TODO: نافيجيت ل CompanyScreen
-                  // context.push(CompanyScreen.routePath);
                 }
               : null,
         );

@@ -14,10 +14,8 @@ class PasswordBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double bottomInset = MediaQuery.of(context).viewInsets.bottom;
-
     return Padding(
-      padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, bottomInset + 16.h),
+      padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
       child: StaggerColumn(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

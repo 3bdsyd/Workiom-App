@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:workiom_test_app/features/signup/screens/thank_you_screen.dart';
+import 'package:workiom_test_app/features/signup/cubit/sign_up_sate.dart';
 import 'package:workiom_test_app/shared/custom_button.dart';
 
 import '../cubit/sign_up_cubit.dart';
@@ -20,22 +19,16 @@ class CompanySubmitButton extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<SignUpCubit>();
 
-        final isFormFilled =
-            state.tenantName.trim().isNotEmpty &&
-            state.firstName.trim().isNotEmpty &&
-            state.lastName.trim().isNotEmpty;
+        final bool canSubmit = state.isCompanyFormValid && !state.isSubmitting;
 
-        final isEnabled = isFormFilled && !state.isSubmitting;
-
-        final text = state.isSubmitting ? 'Creating...' : 'Create Workspace';
+        final String text = state.isSubmitting
+            ? 'Creating...'
+            : 'Create Workspace';
 
         return CustomButton(
           text: text,
-          isEnabled: !isEnabled,
-          onTap: () {
-            context.goNamed(ThankYouScreen.routeName);
-          },
-          // onTap: isEnabled ? cubit.submit : null,
+          isEnabled: canSubmit,
+          onTap: canSubmit ? cubit.submit : null,
         );
       },
     );

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:workiom_test_app/core/gen/assets.gen.dart';
 import 'package:workiom_test_app/core/gen/colors.gen.dart';
+import 'package:workiom_test_app/features/signup/cubit/sign_up_sate.dart';
 import 'package:workiom_test_app/shared/custom_under_line_field.dart';
 
 import '../../../core/app_theme.dart';
@@ -79,7 +80,6 @@ class PasswordFieldsWidget extends StatelessWidget {
                   ),
                 ),
               ),
-
               onChanged: cubit.updatePassword,
             );
           },
@@ -100,12 +100,25 @@ class _PasswordStrengthAndRules extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (prev, curr) =>
-          prev.password != curr.password || prev.complexity != curr.complexity,
+          prev.password != curr.password ||
+          prev.complexity != curr.complexity ||
+          prev.isLoadingComplexity != curr.isLoadingComplexity,
       builder: (context, state) {
         final cubit = context.read<SignUpCubit>();
 
+        if (state.isLoadingComplexity) {
+          return Padding(
+            padding: EdgeInsets.only(top: 8.h),
+            child: const LinearProgressIndicator(),
+          );
+        }
+
         final bool hasMinLength = state.hasMinLength;
         final bool hasUppercase = state.hasUppercase;
+        final bool hasLowercase = state.hasLowercase;
+        final bool hasDigit = state.hasDigit;
+        final bool hasSpecial = state.hasSpecial;
+
         final double strengthValue = state.strengthValue;
         final int requiredLength = state.requiredLength;
         final bool isStrong = cubit.isPasswordValid;
@@ -113,6 +126,15 @@ class _PasswordStrengthAndRules extends StatelessWidget {
         final Color strengthColor = isStrong
             ? ColorName.pastelGreen
             : ColorName.casablanca;
+
+        final complexity = state.complexity;
+
+        final bool showUppercase = complexity == null
+            ? true
+            : complexity.requireUppercase;
+        final bool showLowercase = complexity?.requireLowercase ?? false;
+        final bool showDigit = complexity?.requireDigit ?? false;
+        final bool showSpecial = complexity?.requireNonAlphanumeric ?? false;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +148,7 @@ class _PasswordStrengthAndRules extends StatelessWidget {
                     : Assets.icons.warning.svg(height: 16, width: 16),
                 SizedBox(width: 4.w),
                 Text(
-                  'Not enought strong',
+                  isStrong ? 'Password is strong' : 'Not enough strong',
                   style: AppTextStyles.sectionTitle.copyWith(fontSize: 15.sp),
                 ),
               ],
@@ -136,10 +158,26 @@ class _PasswordStrengthAndRules extends StatelessWidget {
               ok: hasMinLength,
               text: 'Passwords must have at least $requiredLength characters',
             ),
-            PasswordRuleRow(
-              ok: hasUppercase,
-              text: "Passwords must have at least one uppercase ('A'-'Z').",
-            ),
+            if (showUppercase)
+              PasswordRuleRow(
+                ok: hasUppercase,
+                text: "Passwords must have at least one uppercase ('A'-'Z').",
+              ),
+            if (showLowercase)
+              PasswordRuleRow(
+                ok: hasLowercase,
+                text: "Passwords must have at least one lowercase ('a'-'z').",
+              ),
+            if (showDigit)
+              PasswordRuleRow(
+                ok: hasDigit,
+                text: "Passwords must have at least one digit ('0'-'9').",
+              ),
+            if (showSpecial)
+              PasswordRuleRow(
+                ok: hasSpecial,
+                text: 'Passwords must have at least one special character.',
+              ),
           ],
         );
       },

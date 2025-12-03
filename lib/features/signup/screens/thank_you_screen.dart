@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:workiom_test_app/core/gen/assets.gen.dart';
-import 'package:workiom_test_app/core/gen/colors.gen.dart';
 import 'package:workiom_test_app/shared/custom_bottom_brand.dart';
 
 import '../../../core/app_theme.dart';

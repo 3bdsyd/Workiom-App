@@ -1,3 +1,5 @@
+// features/auth/data/models/password_complexity.dart
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'password_complexity.g.dart';
@@ -18,6 +20,11 @@ class PasswordComplexitySetting {
   final bool requireUppercase;
   final int requiredLength;
 
-  factory PasswordComplexitySetting.fromJson(Map<String, dynamic> json) =>
+  factory PasswordComplexitySetting.fromJson(
+    Map<String, dynamic> json,
+  ) =>
       _$PasswordComplexitySettingFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$PasswordComplexitySettingToJson(this);
 }

@@ -9,7 +9,10 @@ class PasswordStrengthBar extends StatelessWidget {
     required this.color,
   });
 
+  /// قيمة قوة الباسورد من 0.0 إلى 1.0
   final double value;
+
+  /// لون البار (أخضر/برتقالي ... إلخ)
   final Color color;
 
   @override
